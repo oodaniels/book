@@ -1,0 +1,72 @@
+{% extends "admin/admin_layout.html"%}
+                        {% block breadcrumbs %}
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Tables</li>
+                        </ol>
+                        {% endblock breadcrumbs %}
+                        {% block admincontent %}
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                DataTables is a third party plugin that is used to generate the demo table below.  
+                                <a href="/admin/newbook" class="btn btn-outline-primary">Add Book</a>
+                            </div>
+                        </div>
+                {% if books %}
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                DataTable Example
+                            </div>
+                {% else %}
+                <div class="alert alert-info">No Book Has Been Added Yet</div>
+                {% endif %}
+                            <div class="card-body">
+                               <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Book Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Cover</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Lights Out</td>
+      <td>Mark</td>
+      <td><img src="{{url_for('static',filename='images/b1.png')}}" height="100"></td>
+      <td><a href="" class="btn btn-sm btn-primary">Edit</a> <a href="" class="btn btn-sm btn-danger">Delete</a> <a href="" class="btn btn-sm btn-success">Published</a></td>
+    </tr>
+     
+   <tr>
+      <th scope="row">1</th>
+      <td>Fame!</td>
+      <td>Angel</td>
+      <td><img src="{{ url_for('static',filename='images/b2.png')}}" height="100"></td>
+      <td><a href="" class="btn btn-sm btn-primary">Edit</a> <a href="" class="btn btn-sm btn-danger">Delete</a> <a href="" class="btn btn-sm btn-success">Published</a></td>
+    </tr>
+    {% for b in books%}
+    <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td>{{b.book_title}}</td>
+        <td>{{b.catdeets.cat_name}}</td>
+        <td><img src="{{url_for('static',filename='collections/'+b.book_cover)}}" height="100" width="100"></td>
+        <td><a href="" class="btn btn-sm btn-primary">Edit</a>
+            <a href="/admin/deletebook/{{b.book_id}}" onclick="confirm('Do You Really Want To Delete {{b.book_title}}?')" class="btn btn-sm btn-danger">Delete</a>
+            {% if b.book_status == '1' %}
+            <a href="" class="btn btn-sm btn-success">Published</a>
+            {% else %}
+            <a href="" class="btn btn-sm btn-warning">Not Published</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+                            </div>
+                        </div>
+
+                        {% endblock admincontent %}

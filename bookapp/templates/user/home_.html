@@ -1,0 +1,50 @@
+{% extends "user/layout.html"%}
+
+{% block morecontent %}
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Book Title</th>
+      <th scope="col">Category</th>
+      <th scope="col">Cover</th>
+      <th scope="col">Reviews</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Lights Out</td>
+      <td>Mark</td>
+      <td><img src="{{url_for('static',filename='images/b1.png')}}" height="100"></td>
+      
+    </tr>
+     
+   <tr>
+      <th scope="row">1</th>
+      <td>Fame!</td>
+      <td>Angel</td>
+      <td><img src="{{ url_for('static',filename='images/b2.png')}}" height="100"></td>
+      
+    </tr>
+    {% for b in books%}
+    <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td><a href="/review/{{b.book_id}}">{{b.book_title}}</a></td>
+        <td>{{b.catdeets.cat_name}}</td>
+        <td><img src="{{url_for('static',filename='collections/'+b.book_cover)}}" height="100" width="100"></td>
+        <td scope="col"><button class="btn btn-sm btn btn-primary">{{b.bookreviews | count}} Reviews</button>
+        <!-- {% if session.get('userid') and session.get('user_loggedin') %}
+        <a href="/review/{{b.book_id}}">Submit a Review</a>
+        {% endif %}   -->
+        </td>
+        
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

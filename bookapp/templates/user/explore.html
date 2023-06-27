@@ -1,0 +1,92 @@
+{%extends "user/layout.html"%}
+{% block header %}{%endblock%}
+
+{% block content %}
+    
+<div class="content" style="background-color: white;padding:3em">
+  <h2>Explore Available Books</h2>
+ </div>
+{%endblock%}
+
+{% block morecontent %}
+<div class="row">
+  <div class="col">
+    <select id="category" class="form-select border-primary">
+      <option value="">Please Select</option>
+      {% for c in cats %}
+      <option value="{{c.cat_id}}">{{c.cat_name}}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col">
+    <input type="text" id="title" class="form-control form-control-lg border-primary" placeholder="Type a Keyword">
+      
+  </div>
+  <div class="col">
+    <button class="btn btn-primary noround btn-lg col-12" id="btnsearch">Search</button>      
+  </div>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Book Title</th>
+      <th scope="col">Category</th>
+      <th scope="col">Cover</th>
+      <th scope="col">Reviews</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Lights Out</td>
+      <td>Mark</td>
+      <td><img src="{{url_for('static',filename='images/b1.png')}}" height="100"></td>
+      
+    </tr>
+     
+   <tr>
+      <th scope="row">1</th>
+      <td>Fame!</td>
+      <td>Angel</td>
+      <td><img src="{{ url_for('static',filename='images/b2.png')}}" height="100"></td>
+      
+    </tr>
+    {% for b in books%}
+    <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td><a href="/review/{{b.book_id}}">{{b.book_title}}</a></td>
+        <td>{{b.catdeets.cat_name}}</td>
+        <td><img src="{{url_for('static',filename='collections/'+b.book_cover)}}" height="100" width="100"></td>
+        <td scope="col"><button class="btn btn-sm btn btn-primary">{{b.bookreviews | count}} Reviews</button>
+        <!-- {% if session.get('userid') and session.get('user_loggedin') %}
+        <a href="/review/{{b.book_id}}">Submit a Review</a>
+        {% endif %}   -->
+        </td>
+        
+    </tr>
+    {% endfor %}
+{% endblock morecontent%} 
+{% block featured %}{%endblock%}
+{% block customjs %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#btnsearch').click(function(){
+      //retrieve the data
+      var cat = $('#category').val()
+      var title = $('#title').val()
+      data2send = {"category":cat,"title":title}
+      //make ajax call
+      $.ajax({
+        url:"/search/book/",
+        data:data2send,
+        type: 'get',
+        success:function(rsp){alert(rsp)},
+        error:function(err){console.log(err)}
+      })
+    })
+  })
+</script>
+
+ {% endblock %}
